@@ -1,3 +1,4 @@
+import { AuthService } from './../../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public authService: AuthService
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  logaout(){
+    this.authService.logout();
   }
 
 }
