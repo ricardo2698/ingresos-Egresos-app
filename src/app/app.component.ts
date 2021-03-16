@@ -13,6 +13,6 @@ export class AppComponent implements OnInit{
   ){}
 
   ngOnInit(){
-    this.authService.initListainer();
+    this.authService.initAuthListainer();
   }
 }

@@ -1,6 +1,14 @@
-import { User } from './user.model';
+import { SetUserAction } from './auth.actions';
+import { DataObj, User } from './user.model';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+
+
+// redux
+import { Store } from '@ngrx/store';
+import { AppState } from './../ui.app.reducer';
+import * as fromAction from './../shared/ui.actions';
+
 
 // rxjs
 import { map } from 'rxjs/operators'
@@ -10,9 +18,9 @@ import Swal from 'sweetalert2'
 
 // Firebase
 import * as firebase from 'firebase';
-
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Subscription } from 'rxjs';
 
 
 
@@ -22,19 +30,34 @@ import { AngularFireAuth } from '@angular/fire/auth';
 })
 export class AuthService {
 
+  private  userSuscription: Subscription = new Subscription();
+
   constructor(
     private afAuth: AngularFireAuth,
     private router: Router,
-    private afDB: AngularFirestore
+    private afDB: AngularFirestore,
+    private store: Store<AppState>
   ) { }
 
-  initListainer(){
+  initAuthListainer(){
     this.afAuth.authState.subscribe( fbUser => {
-      console.log(fbUser);
+      if( fbUser ){
+        this.userSuscription = this.afDB.doc(`${ fbUser.uid }/usuario`).valueChanges()
+        .subscribe( (usuarioObj: any) => {
+          console.log(usuarioObj);
+          const newUser = new User(usuarioObj);
+          this.store.dispatch( new SetUserAction(newUser));
+        } )
+      }else{
+        this.userSuscription.unsubscribe();
+      }
     });
   }
 
   crearUsuario( nombre, email, password){
+
+    this.store.dispatch( new fromAction.ActivarLoadingAction() );
+
     this.afAuth.createUserWithEmailAndPassword(email, password)
     .then( res => {
       /* console.log(res); */
@@ -48,26 +71,34 @@ export class AuthService {
           .set( user )
           .then( () => {
             this.router.navigate(['/']);
+            this.store.dispatch( new fromAction.DesactivarLoadingAction() );
+
           });
 
     })
     .catch( error => {
       console.log(error.message);
+      this.store.dispatch( new fromAction.DesactivarLoadingAction());
       this.swAlert('Error!',error.message);
     })
   }
 
   login(email: string, password: string ){
+
+    this.store.dispatch( new fromAction.ActivarLoadingAction() );
+
     this.afAuth.signInWithEmailAndPassword(email, password)
     .then(
       res=> {
         console.log(res);
         this.router.navigate(['/']);
+        this.store.dispatch( new fromAction.DesactivarLoadingAction() );
       }
     )
     .catch(
       error => {
         console.log(error);
+        this.store.dispatch( new fromAction.DesactivarLoadingAction() );
         this.swAlert('Error!',error.message);
       }
     )
