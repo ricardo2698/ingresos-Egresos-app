@@ -2,13 +2,18 @@
 // Modulos
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+
 import { AppRoutingModule } from './app-routing.module';
   // Modulos Firebase
   import { AngularFireModule } from '@angular/fire';
   import { AngularFireAuthModule } from '@angular/fire/auth';
   import { AngularFirestoreModule } from '@angular/fire/firestore';
   import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+  //Graficas
+  import { ChartsModule } from 'ng2-charts';
 
 // redux
 import { StoreModule } from '@ngrx/store';
@@ -28,6 +33,7 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
 
 
 import { environment } from '../environments/environment';
+import { OrdenIngresoEgresoPipe } from './ingreso-egreso/orden-ingreso-egreso.pipe';
 
 @NgModule({
   declarations: [
@@ -40,15 +46,19 @@ import { environment } from '../environments/environment';
     DetalleComponent,
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    OrdenIngresoEgresoPipe
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    ChartsModule,
     StoreModule.forRoot( appReducers ),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

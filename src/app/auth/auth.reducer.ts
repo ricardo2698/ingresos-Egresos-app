@@ -18,6 +18,11 @@ export function authReducer( state = estadoInicial, action: fromAuth.acciones): 
         user: {... action.user }
       }
 
+    case fromAuth.UN_SET_USER:
+      return {
+        user: null
+      }
+
     default:
       return state;
   }

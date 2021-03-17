@@ -1,4 +1,4 @@
-import { SetUserAction } from './auth.actions';
+import { SetUserAction, UnSetUserAction } from './auth.actions';
 import { DataObj, User } from './user.model';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -22,15 +22,14 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 
-
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
   private  userSuscription: Subscription = new Subscription();
+
+  private user: User;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -46,9 +45,11 @@ export class AuthService {
         .subscribe( (usuarioObj: any) => {
           console.log(usuarioObj);
           const newUser = new User(usuarioObj);
+          this.user = usuarioObj;
           this.store.dispatch( new SetUserAction(newUser));
         } )
       }else{
+        this.user = null;
         this.userSuscription.unsubscribe();
       }
     });
@@ -107,6 +108,7 @@ export class AuthService {
   logout(){
     this.router.navigate(['/login']);
     this.afAuth.signOut();
+    this.store.dispatch( new UnSetUserAction);
   }
 
   // alerta para msj de errorr
@@ -130,6 +132,10 @@ export class AuthService {
         }
       )
     );
+  }
+
+  getUser(){
+    return {... this.user};
   }
 
 }
