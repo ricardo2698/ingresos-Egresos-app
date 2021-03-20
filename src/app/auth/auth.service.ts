@@ -1,26 +1,28 @@
-import { SetUserAction, UnSetUserAction } from './auth.actions';
-import { DataObj, User } from './user.model';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-
 
 // redux
 import { Store } from '@ngrx/store';
 import { AppState } from './../ui.app.reducer';
 import * as fromAction from './../shared/ui.actions';
+import { SetUserAction, UnSetUserAction } from './auth.actions';
+
 
 
 // rxjs
 import { map } from 'rxjs/operators'
 
 // ES6 Modules or TypeScript
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
 
 // Firebase
 import * as firebase from 'firebase';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
+
+import { DataObj, User } from './user.model';
+
 
 @Injectable({
   providedIn: 'root'

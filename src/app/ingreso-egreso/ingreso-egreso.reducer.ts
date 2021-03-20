@@ -1,4 +1,4 @@
-import { IngresoEgreso } from './ingreso-egreso.model';
+  import { IngresoEgreso } from './ingreso-egreso.model';
 import * as fromIngresoEgreso from './ingreso-egreso.actions';
 
 export interface IngresoEgresoState {
@@ -15,7 +15,7 @@ const estadoInicial: IngresoEgresoState  = {
 
       case fromIngresoEgreso.SET_ITEMS:
         return {
-          items: [... action.items.map( item => { // la idea es que esto destruya cualquier relacion retornando otro objeto y pasar todo por referencia
+          items: [... action.items.map( item => { // la idea es que esto destruya cualquier relacion retornando otro objeto y romper la referencia referencia
             return {
               ... item
             }

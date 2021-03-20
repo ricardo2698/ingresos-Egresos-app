@@ -11,13 +11,14 @@ import { AppRoutingModule } from './app-routing.module';
   import { AngularFireModule } from '@angular/fire';
   import { AngularFireAuthModule } from '@angular/fire/auth';
   import { AngularFirestoreModule } from '@angular/fire/firestore';
-  import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
   //Graficas
   import { ChartsModule } from 'ng2-charts';
 
 // redux
 import { StoreModule } from '@ngrx/store';
 import { appReducers } from './ui.app.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 // Components
 import { AppComponent } from './app.component';
@@ -47,7 +48,7 @@ import { OrdenIngresoEgresoPipe } from './ingreso-egreso/orden-ingreso-egreso.pi
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
-    OrdenIngresoEgresoPipe
+    OrdenIngresoEgresoPipe,
   ],
   imports: [
     BrowserModule,
